@@ -37,13 +37,8 @@ bool add_list_node(tree_node* node,int pos) {
         aux->next_node = node->list->list_route;
         node->list->list_route->previous_node = aux;
         node->list->list_route = aux;
-
-
-
-        aux->next_node = node->list->list_route->next_node;
-        node->list->list_route->next_node = aux;
-        aux->previous_node = node->list->list_end;
-        node->list->list_end->next_node = aux->previous_node;
+        node->list->list_end->next_node = aux;
+    
     }
     
 
