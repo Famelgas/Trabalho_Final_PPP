@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linked_list.h"
-#include "binary_tree.h"
+#include "functions_header.h"
+#include "structs_header.h"
 
 
 void initialize_linked_list(linked_list* list) {
@@ -38,7 +38,7 @@ bool add_list_node(tree_node* node,int pos) {
         node->list->list_route->previous_node = aux;
         node->list->list_route = aux;
         node->list->list_end->next_node = aux;
-    
+
     }
     
 

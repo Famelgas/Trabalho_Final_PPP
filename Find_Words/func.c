@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "lib-utf8.h"
 #include "func.h"
-#include "binary_tree.h"
+#include "functions_header.h"
 
 
 const char ALPHABET[MAX_NUMBER_LETTERS] = {"abcdefghijklmnopqrstuvwxyz"};

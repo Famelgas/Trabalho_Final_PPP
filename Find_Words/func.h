@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "binary_tree.h"
+#include "functions_header.h"
 
 #define MAX_FILE_NAME 100
 #define MAX_NUMBER_LETTERS 27
