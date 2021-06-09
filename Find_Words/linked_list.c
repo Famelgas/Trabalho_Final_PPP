@@ -4,16 +4,16 @@
 #include "structs_header.h"
 
 
-void initialize_linked_list(linked_list* list) {
-    list->list_route = NULL;
+linked_list* initialize_linked_list() {
+    linked_list* list = malloc(sizeof(linked_list)); 
+    list->list_root = NULL;
     list->list_end = NULL;
+    return list;
 }
 
 
-bool add_list_node(tree_node* node,int pos) {
-    list_node* aux, * next;
-
-    aux = malloc(sizeof(list_node));
+static linked_list* initialize_node(int pos) {
+    list_node* aux = malloc(sizeof(list_node));
     if (aux == NULL) {
         fprintf(stderr, "Erro, não ha espaço para a criação de um novo nó.\n");
         return false;
@@ -23,23 +23,23 @@ bool add_list_node(tree_node* node,int pos) {
     aux->position = pos;
     aux->next_node = NULL;
     aux->previous_node = NULL;
+    
+    return aux;
+}
 
 
-
-
+bool add_list_node(linked_list* node, int pos) {
+    list_node* aux = initialize_node(pos);
     // adiciona-se sempre o novo nó na primeira posição da lista para facilitar
     // a escrita das ocurrências por ordem decrescente
-    if (node->list->list_route == NULL) {
-        node->list->list_route = aux;
-        node->list->list_end = aux;
+    if (node->list_root == NULL) {
+        node->list_end = aux;
     }
     else {
-        aux->next_node = node->list->list_route;
-        node->list->list_route->previous_node = aux;
-        node->list->list_route = aux;
-        node->list->list_end->next_node = aux;
-
+        aux->next_node = node->list_root;
+        node->list_root->previous_node = aux;
     }
+        node->list_root = aux;
     
 
     return true;
@@ -78,11 +78,11 @@ void print_context(list_node* node, char file_name[]) {
 
 // Escrever o número das ocurrências da palavra dada
 void print_letter_occurrences(tree_node* node) {
-    list_node* i = node->list->list_route;
+    list_node* i = node->list->list_root;
     do {
         printf("%d ", i->position);
-        i = node->list->list_route->next_node;
-    } while (i != node->list->list_route);
+        i = node->list->list_root->next_node;
+    } while (i != node->list->list_root);
     printf("\n");
 }
 

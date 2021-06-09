@@ -8,32 +8,33 @@
 #include "structs_header.h"
 
 
-void initialize_binary_tree(binary_tree* tree) {
-    tree->tree_route = NULL;
+binary_tree* initialize_binary_tree() {
+    binary_tree* tree = malloc(sizeof(binary_tree));
+    tree->tree_root = NULL;
 }
 
 
-static tree_node* add_node(tree_node* tree_route, tree_node* node, char str[], int pos) {
-    if (tree_route == NULL) {
-        tree_route = node;
-        return tree_route;
+static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], int pos) {
+    if (tree_root == NULL) {
+        tree_root = node;
+        return tree_root;
     }
-    if (strcmp(tree_route->word, str) > 0) {
-        if (tree_route->left == NULL) {
-            tree_route->left = node;
-            return tree_route;
+    if (strcmp(tree_root->word, str) > 0) {
+        if (tree_root->left == NULL) {
+            tree_root->left = node;
+            return tree_root;
         }
-        return add_node(tree_route->left, node, str, pos);
+        return add_node(tree_root->left, node, str, pos);
     }
-    if (strcmp(tree_route->word, str) < 0 && tree_route->right == NULL) {
-        tree_route->right = node;
-        return tree_route;
+    if (strcmp(tree_root->word, str) < 0 && tree_root->right == NULL) {
+        tree_root->right = node;
+        return tree_root;
     }
-    return add_node(tree_route->right, node, str, pos);
+    return add_node(tree_root->right, node, str, pos);
 }
 
 
-bool add_tree_node(tree_node* tree_route, tree_node* aux_node, char str[], int pos) {
+bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int pos) {
     tree_node* node;
     node = malloc(sizeof(node));
     if (node = NULL) {
@@ -44,33 +45,32 @@ bool add_tree_node(tree_node* tree_route, tree_node* aux_node, char str[], int p
     node->right = NULL;
     node->left = NULL;
     strcpy(node->word, str);
-    initialize_linked_list(node->list);
-    add_list_node(node, pos);
+    node->list = initialize_linked_list();
     if (!add_list_node(node, pos)) {
         fprintf(stderr, "Erro ao adicionar ocurrência no novo nó.\n");
         return false;
     }
 
-    add_node(tree_route, node, str, pos);
+    add_node(tree_root, node, str, pos);
 
     return true;
 }
 
 
-tree_node* find_tree_node(tree_node* tree_route, char str[]) {
-    if (tree_route == NULL) {
+tree_node* find_tree_node(tree_node* tree_root, char str[]) {
+    if (tree_root == NULL) {
         return NULL;
     }
-    if (strcmp(tree_route->word, str) == 0) 
-        return tree_route;
-    else if (strcmp(tree_route->word, str) > 0)
-        return find_tree_node(tree_route->left, str);
-    return find_tree_node(tree_route->right, str);
+    if (strcmp(tree_root->word, str) == 0) 
+        return tree_root;
+    else if (strcmp(tree_root->word, str) > 0)
+        return find_tree_node(tree_root->left, str);
+    return find_tree_node(tree_root->right, str);
 }
 
 
 bool add_occurrence(tree_node* aux_node, tree_node* route, int pos) {
-    if (!add_list_node(aux_node, pos)) { 
+    if (!add_list_node(aux_node->list, pos)) { 
         fprintf(stderr, "Erro ao adicionar ocorrência.\n");
         return false;
     }
@@ -80,32 +80,32 @@ bool add_occurrence(tree_node* aux_node, tree_node* route, int pos) {
 
 // Escrever todas as ocorrências de uma palavra
 bool print_word_occurrences(tree_node* node, char file_name[]) {
-    list_node* i = node->list->list_route;
+    list_node* i = node->list->list_root;
     do {
         print_context(i, file_name);
-        i = node->list->list_route->next_node;
-    } while (i != node->list->list_route);
+        i = node->list->list_root->next_node;
+    } while (i != node->list->list_root);
 
     return true;
 }
 
 
-static tree_node* find_letter(tree_node* tree_route, char letter) {
-    if (tree_route == NULL) {
+static tree_node* find_letter(tree_node* tree_root, char letter) {
+    if (tree_root == NULL) {
         return NULL;
     }
-    if (strcmp(tree_route->word[0], letter) == 0) {
-        return tree_route;
+    if (strcmp(tree_root->word[0], letter) == 0) {
+        return tree_root;
     }
-    else if (strcmp(tree_route->word[0], letter) > 0)
-        return find_tree_node(tree_route->left, letter);
-    return find_tree_node(tree_route->right, letter);
+    else if (strcmp(tree_root->word[0], letter) > 0)
+        return find_tree_node(tree_root->left, letter);
+    return find_tree_node(tree_root->right, letter);
 }
 
 // Escrever todas as palavras de uma letra
 bool print_words_letter(binary_tree* tree, char letter) {
-    tree_node* node = tree->tree_route;
-    tree_node* next_node = tree->tree_route;
+    tree_node* node = tree->tree_root;
+    tree_node* next_node = tree->tree_root;
 
     while (node != NULL) {
         node = find_letter(next_node, letter);

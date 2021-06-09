@@ -81,13 +81,12 @@ static void separate_string(char* str[], char* new_str, int* pos) {
 
 bool read_file(binary_tree* tree, char file_name[]) {
     FILE* file;
-    
 
     if (read_name(file_name) == NULL) {
         return false;
     }
 
-    initialize_binary_tree(tree);
+    binary_tree* tree = initialize_binary_tree();
 
     file = fopen(file_name, "r");
     if (file == NULL) {
@@ -110,16 +109,16 @@ bool read_file(binary_tree* tree, char file_name[]) {
         
         separate_string(&str, new_str, &pos);
 
-        aux_node = find_tree_node(tree->tree_route, new_str);
+        aux_node = find_tree_node(tree->tree_root, new_str);
         if (aux_node != NULL) {
-            if (!add_occurrence(aux_node, tree->tree_route, pos)) {
+            if (!add_occurrence(aux_node, tree->tree_root, pos)) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
                 return false;
             }
 
         }
         if (aux_node == NULL) {
-            if (!add_tree_node(tree->tree_route, aux_node,  new_str, pos)) { 
+            if (!add_tree_node(tree->tree_root, aux_node,  new_str, pos)) { 
                 fprintf(stderr, "Erro na escrita da palavra.\n");
                 return false;
             }
@@ -162,7 +161,7 @@ bool find_occurrences(binary_tree* tree, char file_name[]) {
 
 
 
-    node = find_tree_node(tree->tree_route, word);
+    node = find_tree_node(tree->tree_root, word);
     if (node == NULL) {
         fprintf(stderr, "Erro, palavra não encontrada.\n");
         return false;
