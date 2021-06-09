@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "functions_header.h"
-#include "structs_header.h"
+#include "binary_tree.h"
+#include "linked_list.h"
 
 
 linked_list* initialize_linked_list() {
@@ -45,44 +45,5 @@ bool add_list_node(linked_list* node, int pos) {
     return true;
 }
 
-// Escrever contexto da palavra (frase da palavra e frase posterior)
-void print_context(list_node* node, char file_name[]) {
-    FILE* file;
 
-    // como já foi feita a verificação do nome do ficheiro quando foi feita 
-    // a sua leitura, não e necessário fazer essa verificação de novo
-    file = fopen(file_name, "r");
-    fseek(file, node->position, SEEK_SET);
-
-    while (true) {
-        fseek(file_name, -1, SEEK_CUR);
-        if (fgetc(file) == '.') 
-            break;
-    }
-
-    int dot_count = 0;
-    while (dot_count < 2 && fgetc(file) != EOF) {
-        char chr;
-        if ((chr = fgetc(file)) == '.') {
-            ++dot_count;
-            printf("%c", chr);
-        }
-        else {
-            printf("%c", chr);
-        }
-    }
-    printf("\n");
-
-    fclose(file);
-}
-
-// Escrever o número das ocurrências da palavra dada
-void print_letter_occurrences(tree_node* node) {
-    list_node* i = node->list->list_root;
-    do {
-        printf("%d ", i->position);
-        i = node->list->list_root->next_node;
-    } while (i != node->list->list_root);
-    printf("\n");
-}
 

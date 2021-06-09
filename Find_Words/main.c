@@ -2,12 +2,13 @@
 
 #include <stdio.h>
 #include "func.h"
+#include "binary_tree.h"
 
 int main() {
-    binary_tree tree;
+    binary_tree* tree = initialize_binary_tree();
     char file_name[MAX_FILE_NAME];
 
-    if (!read_file(&tree, file_name)) {
+    if (!read_file(tree, file_name)) {
         fprintf(stderr, "Erro na leitura do ficheiro.\n");
         return 1;
     }
@@ -23,16 +24,16 @@ int main() {
     }
 
     if (option == 1) {
-        find_occurrences(&tree, file_name);
+        find_occurrences(tree, file_name);
     }
     if (option == 2) {
         // dá-se apenas uma letra e são apresentadas todas as palavras dessa letra
-        find_words_letter(&tree, file_name);
+        find_words_letter(tree, file_name);
     }
     if (option == 3) {
         // dá-se duas letras diferentes e são apresentadas toodas as palavras de
         // de todas as letras nesse intervalo
-        find_words_group(&tree, file_name);
+        find_words_group(tree, file_name);
     }
 
     

@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "func.h"
-#include "functions_header.h"
-#include "structs_header.h"
+#include "binary_tree.h"
+#include "linked_list.h"
+#include "func.h"
 
 
 binary_tree* initialize_binary_tree() {

@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "lib-utf8.h"
 #include "func.h"
-#include "functions_header.h"
+#include "binary_tree.h"
 
 
 const char ALPHABET[MAX_NUMBER_LETTERS] = {"abcdefghijklmnopqrstuvwxyz"};
@@ -63,19 +63,13 @@ static char* read_name(char file_name[]) {
 }
 
 
-static void separate_string(char* str[], char* new_str, int* pos) {
+static void separate_string(char* str, int* pos) {
     char int_str[10] = "";
-    char new_str_utf8[MAX_WORD_SIZE] = "";
-    for (int i = 0; i < strlen(* str); ++i) {
-        if (!isdigit(* str[i])) {
-            strcat(new_str_utf8, str[i]);
-        }
-        else {
-            strcat(int_str, str[i]);
-        }
-    }
-    strtobase_u8(new_str, new_str_utf8);
-    * pos = (int) strtol(int_str, NULL, 10);
+    const char delims[] = " \t\f\v\r\n";
+
+    str = strtok(str, delims);
+    * pos = (int) strtol(strtok(NULL, delims), NULL, 10);
+
 }
 
 
@@ -86,7 +80,6 @@ bool read_file(binary_tree* tree, char file_name[]) {
         return false;
     }
 
-    binary_tree* tree = initialize_binary_tree();
 
     file = fopen(file_name, "r");
     if (file == NULL) {
@@ -95,21 +88,15 @@ bool read_file(binary_tree* tree, char file_name[]) {
     }
 
 
-    char chr;
-    while ((chr = fgetc(file)) != EOF) {
+    char line[MAX_WORD_SIZE + 10];
+    while ((fgets(line, MAX_WORD_SIZE + 10, file)) != NULL) {
         tree_node* aux_node;
-        char str[MAX_WORD_SIZE + 10] = "";
-
-        while (chr != '\n') {
-            strcat(str, &chr);
-        }
-        
+        char str[MAX_WORD_SIZE];
         int pos;
-        char new_str[MAX_WORD_SIZE] = "";
         
-        separate_string(&str, new_str, &pos);
+        separate_string(str, &pos);
 
-        aux_node = find_tree_node(tree->tree_root, new_str);
+        aux_node = find_tree_node(tree->tree_root, str);
         if (aux_node != NULL) {
             if (!add_occurrence(aux_node, tree->tree_root, pos)) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
@@ -118,7 +105,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
 
         }
         if (aux_node == NULL) {
-            if (!add_tree_node(tree->tree_root, aux_node,  new_str, pos)) { 
+            if (!add_tree_node(tree->tree_root, aux_node,  str, pos)) { 
                 fprintf(stderr, "Erro na escrita da palavra.\n");
                 return false;
             }
@@ -193,6 +180,7 @@ bool find_words_group(binary_tree* tree, char file_name[]) {
     int option;
     char letters[MAX_NUMBER_LETTERS] = "";
     char buffer[3] = "";
+    char buffer_base[3] = "";
 
     printf("Escolha a opção que pretende:\n"
             "1 - Intervalo de letras;\n"
@@ -201,54 +189,68 @@ bool find_words_group(binary_tree* tree, char file_name[]) {
     if (option == 1) {
         printf("Introduza o intervalo da seguindo o exemplo (Ex: a-j):\n");
         fgets_u8(buffer, 3, stdin);
+        strtobase_u8(buffer_base, buffer);
         
-        
-        bool in = false;
-        for (int i = 0; i < MAX_NUMBER_LETTERS; ++i) {
-            if (ALPHABET[i] == buffer[0]) {
-                in = true;
-            }
-            if (ALPHABET[i] == buffer[2]) {
-                strcat(letters, ALPHABET[i]);
-                in = false;
-                break;
-            }
-            if (in == true) {
-                strcat(letters, ALPHABET[i]);
-            }
+        for (char c = buffer_base[0]; c <= buffer_base[2]; ++c) {
+            strcat(letters, c);
         }
-        
-        for (size_t i = 0; i < strlen(letters); ++i) {
-            if (!print_words_letter(tree, letters[i])) {
-                fprintf("Erro, letra %s não encontrada.\n", letters[i]);
-                return false;
-            }
-        
-        }
-
-
-
     }
-
-
-
 
     if (option == 2) {
         pritnf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):");
         fgets_u8(letters, MAX_NUMBER_LETTERS, stdin);
 
-        for (size_t i = 0; i < strlen(letters); ++i) {
-            if (!print_words_letter(tree, letters[i])) {
-                fprintf("Erro, letra %s não encontrada.\n", letters[i]);
-                return false;
-            }
-        
-        }
+    }
 
+    for (size_t i = 0; i < strlen(letters); ++i) {
+        if (!print_words_letter(tree, letters[i])) {
+            fprintf("Erro, letra %s não encontrada.\n", letters[i]);
+            return false;
+        }
+    
     }
 
 }
 
 
+// Escrever contexto da palavra (frase da palavra e frase posterior)
+void print_context(list_node* node, char file_name[]) {
+    FILE* file;
 
+    // como já foi feita a verificação do nome do ficheiro quando foi feita 
+    // a sua leitura, não e necessário fazer essa verificação de novo
+    file = fopen(file_name, "r");
+    fseek(file, node->position, SEEK_SET);
+
+    while (true) {
+        fseek(file_name, -1, SEEK_CUR);
+        if (fgetc(file) == '.') 
+            break;
+    }
+
+    int dot_count = 0;
+    while (dot_count < 2 && fgetc(file) != EOF) {
+        char chr;
+        if ((chr = fgetc(file)) == '.') {
+            ++dot_count;
+            printf("%c", chr);
+        }
+        else {
+            printf("%c", chr);
+        }
+    }
+    printf("\n");
+
+    fclose(file);
+}
+
+// Escrever o número das ocurrências da palavra dada
+void print_letter_occurrences(tree_node* node) {
+    list_node* i = node->list->list_root;
+    do {
+        printf("%d ", i->position);
+        i = node->list->list_root->next_node;
+    } while (i != node->list->list_root);
+    printf("\n");
+}
 

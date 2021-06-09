@@ -1,6 +1,8 @@
 #ifndef STRUCTS_HEADER_H
 #define STRUCTS_HEADER_H
 
+#include "linked_list.h"
+
 
 #define MAX_WORD_SIZE 50
 

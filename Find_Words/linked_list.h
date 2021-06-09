@@ -2,7 +2,6 @@
 #define FUNCTIONS_HEADER_H
 
 #include <stdbool.h>
-#include "structs_header.h"
 
 
 #define MAX_NUM_OCCURRENCES 500
@@ -22,9 +21,5 @@ typedef struct {
 linked_list* initialize_linked_list();
 
 bool add_list_node(linked_list* node, int pos);
-
-void print_context(list_node* node, char file_name[]);
-
-void print_letter_occurrences(tree_node* node);
 
 #endif
