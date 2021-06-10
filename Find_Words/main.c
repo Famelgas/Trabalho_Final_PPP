@@ -15,7 +15,7 @@ int main() {
 
     int option;
     while (!menu(&option)) {
-        printf("Introduz um número.\n");
+        printf("Introduza um número.\n");
     }
 
     if (!option) {
