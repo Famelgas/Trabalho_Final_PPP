@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include "lib-utf8.h"
 #include "func.h"
+#include "print_words.h"
 #include "binary_tree.h"
 
 
