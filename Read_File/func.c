@@ -57,7 +57,7 @@ bool read_file(char file_name[], char new_file_name[]) {
     new_file = fopen(new_file_name, "w");
 
     char chr;
-    char str[50];
+    char str[50] = "";
     while ((chr = fgetc(file)) != EOF) {
         size_t i = 0;
         long position = 0;
