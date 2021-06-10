@@ -13,7 +13,7 @@ const char ALPHABET[MAX_NUMBER_LETTERS] = {"abcdefghijklmnopqrstuvwxyz"};
 
 static int* read_number(int* option) {
     char int_str[10];
-    if (fgets(int_str, 11, stdin) == NULL) {
+    if (fgets(int_str, 10, stdin) == NULL) {
         fprintf(stderr, "Erro, input de número inválido.\n");
         return NULL;
     }
@@ -64,7 +64,6 @@ static char* read_name(char file_name[]) {
 
 
 static void separate_string(char* str, int* pos) {
-    char int_str[10] = "";
     const char delims[] = " \t\f\v\r\n";
 
     str = strtok(str, delims);
@@ -168,7 +167,7 @@ bool find_words_letter(binary_tree* tree, char file_name[]) {
     fgets_c_u8(&chr_temp, 1, stdin);
     strtobase_u8(&letter, &chr_temp);
     if (!print_words_letter(tree, letter)) {
-        fpritnf(stderr, "Erro, letra não encontrada.\n");
+        fprintf(stderr, "Erro, letra não encontrada.\n");
         return false;
     }
 
@@ -191,25 +190,27 @@ bool find_words_group(binary_tree* tree, char file_name[]) {
         fgets_u8(buffer, 3, stdin);
         strtobase_u8(buffer_base, buffer);
         
-        for (char c = buffer_base[0]; c <= buffer_base[2]; ++c) {
-            strcat(letters, c);
+
+        int null = 0;
+        for (char c = buffer_base[0]; c <= buffer_base[2]; ++c, ++null) {
+            letters[null] = c;
         }
     }
 
     if (option == 2) {
-        pritnf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):");
+        printf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):");
         fgets_u8(letters, MAX_NUMBER_LETTERS, stdin);
-
     }
 
     for (size_t i = 0; i < strlen(letters); ++i) {
         if (!print_words_letter(tree, letters[i])) {
-            fprintf("Erro, letra %s não encontrada.\n", letters[i]);
+            fprintf(stderr, "Erro, letra %c não encontrada.\n", letters[i]);
             return false;
         }
     
     }
 
+    return true;
 }
 
 
@@ -223,7 +224,7 @@ void print_context(list_node* node, char file_name[]) {
     fseek(file, node->position, SEEK_SET);
 
     while (true) {
-        fseek(file_name, -1, SEEK_CUR);
+        fseek(file, -1, SEEK_CUR);
         if (fgetc(file) == '.') 
             break;
     }

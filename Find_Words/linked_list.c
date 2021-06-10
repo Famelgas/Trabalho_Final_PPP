@@ -12,7 +12,7 @@ linked_list* initialize_linked_list() {
 }
 
 
-static linked_list* initialize_node(int pos) {
+static list_node* initialize_node(int pos) {
     list_node* aux = malloc(sizeof(list_node));
     if (aux == NULL) {
         fprintf(stderr, "Erro, não ha espaço para a criação de um novo nó.\n");

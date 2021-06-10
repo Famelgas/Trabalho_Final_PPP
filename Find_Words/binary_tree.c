@@ -12,6 +12,7 @@
 binary_tree* initialize_binary_tree() {
     binary_tree* tree = malloc(sizeof(binary_tree));
     tree->tree_root = NULL;
+    return tree;
 }
 
 
@@ -38,7 +39,7 @@ static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], in
 bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int pos) {
     tree_node* node;
     node = malloc(sizeof(node));
-    if (node = NULL) {
+    if (node == NULL) {
         fprintf(stderr, "Erro na criação de um novo nó.\n");
         return false;
     }
@@ -47,7 +48,7 @@ bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int po
     node->left = NULL;
     strcpy(node->word, str);
     node->list = initialize_linked_list();
-    if (!add_list_node(node, pos)) {
+    if (!add_list_node(node->list, pos)) {
         fprintf(stderr, "Erro ao adicionar ocurrência no novo nó.\n");
         return false;
     }
@@ -59,13 +60,15 @@ bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int po
 
 
 tree_node* find_tree_node(tree_node* tree_root, char str[]) {
-    if (tree_root == NULL) {
+    if (tree_root == NULL) 
         return NULL;
-    }
+    
     if (strcmp(tree_root->word, str) == 0) 
         return tree_root;
+
     else if (strcmp(tree_root->word, str) > 0)
         return find_tree_node(tree_root->left, str);
+    
     return find_tree_node(tree_root->right, str);
 }
 
@@ -92,15 +95,16 @@ bool print_word_occurrences(tree_node* node, char file_name[]) {
 
 
 static tree_node* find_letter(tree_node* tree_root, char letter) {
-    if (tree_root == NULL) {
+    if (tree_root == NULL) 
         return NULL;
-    }
-    if (strcmp(tree_root->word[0], letter) == 0) {
+    
+    if (tree_root->word[0]== letter) 
         return tree_root;
-    }
-    else if (strcmp(tree_root->word[0], letter) > 0)
-        return find_tree_node(tree_root->left, letter);
-    return find_tree_node(tree_root->right, letter);
+    
+    else if (tree_root->word[0] > letter)
+        return find_letter(tree_root->left, letter);
+    
+    return find_letter(tree_root->right, letter);
 }
 
 // Escrever todas as palavras de uma letra
