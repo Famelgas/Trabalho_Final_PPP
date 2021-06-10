@@ -24,7 +24,6 @@ static bool read_name(char* file_name) {
 
 static bool write_new_word(char str[], char pos[], FILE* new_file, FILE* file) {
 
-    
     strcat(str, " ");
     strcat(str, pos);
     strcat(str, "\n");
@@ -74,21 +73,18 @@ bool read_file(char file_name[], char new_file_name[]) {
         if (new_word) {
             if (strlen(str) >= 3) {
                 char pos[15];
-                position = ftell(file);
-                position -= (int) strlen(str);
+                position = ftell(file) - strlen(str);
                 // fazer conversao do numero (posicao) para string
                 sprintf(pos, "%d", (int) position);
                 write_new_word(str, pos, new_file, file);
-                strcpy(str, "\0");
             }
-            else {
-                strcpy(str, "\0");
-            }
-
+            strcpy(str, "\0");
         }
         
         if (!new_word) {
-            strcat(str, &chr);
+            char buffer[2] = "\0";
+            buffer[0] = chr;
+            strcat(str, buffer);
         }
         
     }
