@@ -14,7 +14,7 @@ binary_tree* initialize_binary_tree() {
 }
 
 
-static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], int pos) {
+static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], long pos) {
     if (tree_root == NULL) {
         tree_root = node;
         return tree_root;
@@ -34,7 +34,7 @@ static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], in
 }
 
 
-bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int pos) {
+bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long pos) {
     tree_node* node;
     node = malloc(sizeof(node));
     if (node == NULL) {
@@ -54,4 +54,18 @@ bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], int po
     add_node(tree_root, node, str, pos);
 
     return true;
+}
+
+
+tree_node* find_tree_node(tree_node* tree_root, char str[]) {
+    if (tree_root == NULL) 
+        return NULL;
+    
+    if (strcmp(tree_root->word, str) == 0) 
+        return tree_root;
+
+    else if (strcmp(tree_root->word, str) > 0)
+        return find_tree_node(tree_root->left, str);
+    
+    return find_tree_node(tree_root->right, str);
 }

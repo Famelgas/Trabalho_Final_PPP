@@ -7,21 +7,8 @@
 #include "linked_list.h"
 
 
-tree_node* find_tree_node(tree_node* tree_root, char str[]) {
-    if (tree_root == NULL) 
-        return NULL;
-    
-    if (strcmp(tree_root->word, str) == 0) 
-        return tree_root;
 
-    else if (strcmp(tree_root->word, str) > 0)
-        return find_tree_node(tree_root->left, str);
-    
-    return find_tree_node(tree_root->right, str);
-}
-
-
-bool add_occurrence(tree_node* aux_node, tree_node* route, int pos) {
+bool add_occurrence(tree_node* aux_node, tree_node* route, long pos) {
     if (!add_list_node(aux_node->list, pos)) { 
         fprintf(stderr, "Erro ao adicionar ocorrência.\n");
         return false;
@@ -30,8 +17,41 @@ bool add_occurrence(tree_node* aux_node, tree_node* route, int pos) {
     return true;
 }
 
+
+// Escrever contexto da palavra (frase da palavra e frase posterior)
+static void print_context(list_node* node, char file_name[]) {
+    FILE* file;
+
+    // como já foi feita a verificação do nome do ficheiro quando foi feita 
+    // a sua leitura, não e necessário fazer essa verificação de novo
+    file = fopen(file_name, "r");
+    fseek(file, node->position, SEEK_SET);
+
+    while (true) {
+        fseek(file, -1, SEEK_CUR);
+        if (fgetc(file) == '.') 
+            break;
+    }
+
+    int dot_count = 0;
+    while (dot_count < 2 && fgetc(file) != EOF) {
+        char chr;
+        if ((chr = fgetc(file)) == '.') {
+            ++dot_count;
+            printf("%c", chr);
+        }
+        else {
+            printf("%c", chr);
+        }
+    }
+    printf("\n");
+
+    fclose(file);
+}
+
+
 // Escrever todas as ocorrências de uma palavra
-bool print_word_occurrences(tree_node* node, char file_name[]) {
+bool show_word_occurrences(tree_node* node, char file_name[]) {
     list_node* i = node->list->list_root;
     do {
         print_context(i, file_name);
@@ -55,8 +75,20 @@ static tree_node* find_letter(tree_node* tree_root, char letter) {
     return find_letter(tree_root->right, letter);
 }
 
+
+// Escrever o número das ocurrências da palavra dada
+static void print_occurrence_numbers(tree_node* node) {
+    list_node* i = node->list->list_root;
+    do {
+        printf("%d ", i->position);
+        i = node->list->list_root->next_node;
+    } while (i != node->list->list_root);
+    printf("\n");
+}
+
+
 // Escrever todas as palavras de uma letra
-bool print_words_letter(binary_tree* tree, char letter) {
+bool print_words_by_letter(binary_tree* tree, char letter) {
     tree_node* node = tree->tree_root;
     tree_node* next_node = tree->tree_root;
 
@@ -69,7 +101,7 @@ bool print_words_letter(binary_tree* tree, char letter) {
             next_node = node->right;
         }
         printf("%s ", node->word);
-        print_letter_occurrences(node);
+        print_occurrence_numbers(node);
     }
     return true;
 }

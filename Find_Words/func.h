@@ -16,12 +16,10 @@ bool menu(int* option);
 
 bool find_occurrences(binary_tree* tree, char file_name[]);
 
-bool find_words_letter(binary_tree* tree, char file_name[]);
+bool find_words_by_letter(binary_tree* tree, char file_name[]);
 
-bool find_words_group(binary_tree* tree, char file_name[]);
+bool find_words_by_group(binary_tree* tree, char file_name[]);
 
-void print_context(list_node* node, char file_name[]);
 
-void print_letter_occurrences(tree_node* node);
 
 #endif

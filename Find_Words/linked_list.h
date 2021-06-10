@@ -20,6 +20,6 @@ typedef struct {
 
 linked_list* initialize_linked_list();
 
-bool add_list_node(linked_list* node, int pos);
+bool add_list_node(linked_list* node, long pos);
 
 #endif

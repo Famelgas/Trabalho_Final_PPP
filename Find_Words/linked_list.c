@@ -12,7 +12,7 @@ linked_list* initialize_linked_list() {
 }
 
 
-static list_node* initialize_node(int pos) {
+static list_node* initialize_node(long pos) {
     list_node* aux = malloc(sizeof(list_node));
     if (aux == NULL) {
         fprintf(stderr, "Erro, não ha espaço para a criação de um novo nó.\n");
@@ -28,7 +28,7 @@ static list_node* initialize_node(int pos) {
 }
 
 
-bool add_list_node(linked_list* node, int pos) {
+bool add_list_node(linked_list* node, long pos) {
     list_node* aux = initialize_node(pos);
     // adiciona-se sempre o novo nó na primeira posição da lista para facilitar
     // a escrita das ocurrências por ordem decrescente

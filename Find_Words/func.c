@@ -64,7 +64,7 @@ static char* read_name(char file_name[]) {
 }
 
 
-static void separate_string(char* str, int* pos) {
+static void separate_string(char* str, long* pos) {
     const char delims[] = " \t\f\v\r\n";
 
     str = strtok(str, delims);
@@ -92,7 +92,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
     while ((fgets(line, MAX_WORD_SIZE + 10, file)) != NULL) {
         tree_node* aux_node;
         char str[MAX_WORD_SIZE];
-        int pos;
+        long pos;
         
         separate_string(str, &pos);
 
@@ -154,20 +154,20 @@ bool find_occurrences(binary_tree* tree, char file_name[]) {
         return false;
     }
 
-    print_word_occurrences(node, file_name);
+    show_word_occurrences(node, file_name);
 
     return true;
 }
 
 // Econtrar todas as palavras de uma letra
-bool find_words_letter(binary_tree* tree, char file_name[]) {
+bool find_words_by_letter(binary_tree* tree, char file_name[]) {
     char letter;
     char chr_temp;
 
     printf("Introduza a letra pretendida: \n");
     fgets_c_u8(&chr_temp, 1, stdin);
     strtobase_u8(&letter, &chr_temp);
-    if (!print_words_letter(tree, letter)) {
+    if (!print_words_by_letter(tree, letter)) {
         fprintf(stderr, "Erro, letra não encontrada.\n");
         return false;
     }
@@ -176,7 +176,7 @@ bool find_words_letter(binary_tree* tree, char file_name[]) {
 }
 
 // Econtrar todas as palavras de um grupo de letras
-bool find_words_group(binary_tree* tree, char file_name[]) {
+bool find_words_by_group(binary_tree* tree, char file_name[]) {
     int option;
     char letters[MAX_NUMBER_LETTERS] = "";
     char buffer[3] = "";
@@ -204,7 +204,7 @@ bool find_words_group(binary_tree* tree, char file_name[]) {
     }
 
     for (size_t i = 0; i < strlen(letters); ++i) {
-        if (!print_words_letter(tree, letters[i])) {
+        if (!print_words_by_letter(tree, letters[i])) {
             fprintf(stderr, "Erro, letra %c não encontrada.\n", letters[i]);
             return false;
         }
@@ -213,46 +213,3 @@ bool find_words_group(binary_tree* tree, char file_name[]) {
 
     return true;
 }
-
-
-// Escrever contexto da palavra (frase da palavra e frase posterior)
-void print_context(list_node* node, char file_name[]) {
-    FILE* file;
-
-    // como já foi feita a verificação do nome do ficheiro quando foi feita 
-    // a sua leitura, não e necessário fazer essa verificação de novo
-    file = fopen(file_name, "r");
-    fseek(file, node->position, SEEK_SET);
-
-    while (true) {
-        fseek(file, -1, SEEK_CUR);
-        if (fgetc(file) == '.') 
-            break;
-    }
-
-    int dot_count = 0;
-    while (dot_count < 2 && fgetc(file) != EOF) {
-        char chr;
-        if ((chr = fgetc(file)) == '.') {
-            ++dot_count;
-            printf("%c", chr);
-        }
-        else {
-            printf("%c", chr);
-        }
-    }
-    printf("\n");
-
-    fclose(file);
-}
-
-// Escrever o número das ocurrências da palavra dada
-void print_letter_occurrences(tree_node* node) {
-    list_node* i = node->list->list_root;
-    do {
-        printf("%d ", i->position);
-        i = node->list->list_root->next_node;
-    } while (i != node->list->list_root);
-    printf("\n");
-}
-
