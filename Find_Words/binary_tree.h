@@ -21,9 +21,9 @@ typedef struct {
 
 binary_tree* initialize_binary_tree();
 
-bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long pos);
+bool add_tree_node(binary_tree* tree, char str[], long pos);
 
-tree_node* find_tree_node(tree_node* route, char str[]);
+tree_node* find_tree_node(binary_tree* tree, char str[]);
 
 
 #endif

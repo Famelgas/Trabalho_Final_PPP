@@ -14,29 +14,28 @@ binary_tree* initialize_binary_tree() {
 }
 
 
-static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[]) {
+static void add_node(tree_node* tree_root, tree_node* node) {
     if (tree_root == NULL) {
         tree_root = node;
         return tree_root;
     }
-    if (strcmp(tree_root->word, str) > 0) {
+    if (strcmp(tree_root->word, node->word) > 0) {
         if (tree_root->left == NULL) {
             tree_root->left = node;
-            return tree_root;
+            return;
         }
-        return add_node(tree_root->left, node, str);
+        return add_node(tree_root->left, node->word);
     }
-    if (strcmp(tree_root->word, str) < 0 && tree_root->right == NULL) {
+    if (strcmp(tree_root->word, node->word) < 0 && tree_root->right == NULL) {
         tree_root->right = node;
-        return tree_root;
+        return;
     }
-    return add_node(tree_root->right, node, str);
+    return add_node(tree_root->right, node->word);
 }
 
 
-bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long pos) {
-    tree_node* node;
-    node = malloc(sizeof(tree_node));
+bool add_tree_node(binary_tree* tree, char str[], long pos) {
+    tree_node* node = malloc(sizeof(tree_node));
     if (node == NULL) {
         fprintf(stderr, "Erro na criação de um novo nó.\n");
         return false;
@@ -51,21 +50,21 @@ bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long p
         return false;
     }
 
-    tree_root = add_node(tree_root, node, str);
+    add_node(tree->tree_root, node);
 
     return true;
 }
 
 
-tree_node* find_tree_node(tree_node* tree_root, char word[]) {
-    if (tree_root == NULL) 
+tree_node* find_tree_node(binary_tree* tree, char word[]) {
+    if (tree->tree_root == NULL) 
         return NULL;
     
-    if (strcmp(tree_root->word, word) == 0) 
-        return tree_root;
+    if (strcmp(tree->tree_root->word, word) == 0) 
+        return tree->tree_root;
 
-    else if (strcmp(tree_root->word, word) > 0)
-        return find_tree_node(tree_root->left, word);
+    else if (strcmp(tree->tree_root->word, word) > 0)
+        return find_tree_node(tree->tree_root->left, word);
     
-    return find_tree_node(tree_root->right, word);
+    return find_tree_node(tree->tree_root->right, word);
 }
