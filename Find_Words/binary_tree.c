@@ -57,15 +57,15 @@ bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long p
 }
 
 
-tree_node* find_tree_node(tree_node* tree_root, char str[]) {
+tree_node* find_tree_node(tree_node* tree_root, char word[]) {
     if (tree_root == NULL) 
         return NULL;
     
-    if (strcmp(tree_root->word, str) == 0) 
+    if (strcmp(tree_root->word, word) == 0) 
         return tree_root;
 
-    else if (strcmp(tree_root->word, str) > 0)
-        return find_tree_node(tree_root->left, str);
+    else if (strcmp(tree_root->word, word) > 0)
+        return find_tree_node(tree_root->left, word);
     
-    return find_tree_node(tree_root->right, str);
+    return find_tree_node(tree_root->right, word);
 }

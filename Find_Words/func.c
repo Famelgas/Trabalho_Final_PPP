@@ -25,7 +25,7 @@ static bool read_number(int* option) {
 }
 
 
-static char* read_word(char* word) {
+static char* read_word(char word[]) {
     printf("Introduza a palavra (a palavra tem que ter pelo menos três caracteres, números ou letras).\n");
     if (fgets_u8(word, MAX_WORD_SIZE + 1,stdin) == NULL)
         return NULL;
@@ -134,8 +134,8 @@ bool menu(int* option) {
 bool find_occurrences(binary_tree* tree, char file_name[]) {
     tree_node* node;
 
-    char word[MAX_WORD_SIZE];
-    if (read_word(word)) {
+    char word[MAX_WORD_SIZE] = "";
+    if (read_word(word) == NULL) {
         fprintf(stderr, "Erro, palavra inválida.\n");
         return false;
     }
