@@ -12,16 +12,16 @@
 const char ALPHABET[MAX_NUMBER_LETTERS] = {"abcdefghijklmnopqrstuvwxyz"};
 
 
-static int* read_number(int* option) {
-    int num;
-    if (!isdigit(num = fgetc(stdin))) {
+static bool read_number(int* option) {
+    char int_str[10] = "";
+    if (fgets(int_str, 10, stdin) == NULL) {
         fprintf(stderr, "Erro, input de número inválido.\n");
-        return NULL;
+        return false;
     }
 
-    * option = num;
+    * option = (int) strtol(int_str, NULL, 10);
 
-    return option;
+    return true;
 }
 
 
@@ -122,7 +122,7 @@ bool menu(int* option) {
             "2 - Mostrar todas as palavras começadas por uma letra\n"
             "3 - Mostrar todas as palavras numa gama de letras\n");
     
-    if (read_number(option) == NULL) {
+    if (!read_number(option)) {
         fprintf(stderr,"Erro na leitura da opção\n");
         return false;
     }
