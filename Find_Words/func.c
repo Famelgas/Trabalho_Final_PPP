@@ -88,15 +88,16 @@ bool read_file(binary_tree* tree, char file_name[]) {
     }
 
 
+    // line - palavra mais numero de ocorrência
     char line[MAX_WORD_SIZE + 10];
     while ((fgets(line, MAX_WORD_SIZE + 10, file)) != NULL) {
         tree_node* aux_node;
-        char str[MAX_WORD_SIZE];
         long pos;
         
-        separate_string(str, &pos);
+        // line - passa a ser apenas a palavra
+        separate_string(line, &pos);
 
-        aux_node = find_tree_node(tree->tree_root, str);
+        aux_node = find_tree_node(tree->tree_root, line);
         if (aux_node != NULL) {
             if (!add_occurrence(aux_node, tree->tree_root, pos)) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
@@ -105,7 +106,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
 
         }
         if (aux_node == NULL) {
-            if (!add_tree_node(tree->tree_root, aux_node,  str, pos)) { 
+            if (!add_tree_node(tree->tree_root, aux_node,  line, pos)) { 
                 fprintf(stderr, "Erro na escrita da palavra.\n");
                 return false;
             }
