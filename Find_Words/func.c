@@ -13,20 +13,13 @@ const char ALPHABET[MAX_NUMBER_LETTERS] = {"abcdefghijklmnopqrstuvwxyz"};
 
 
 static int* read_number(int* option) {
-    char int_str[10];
-    if (fgets(int_str, 10, stdin) == NULL) {
+    int num;
+    if (!isdigit(num = fgetc(stdin))) {
         fprintf(stderr, "Erro, input de número inválido.\n");
         return NULL;
     }
 
-    for (int i = 0; i < strlen(int_str); ++i) {
-        if (!isdigit(int_str[i])) {
-            fprintf(stderr, "Erro, input de número inválido.\n");
-            return NULL;
-        }
-    }
-
-    * option = (int) strtol(int_str, NULL, 10);
+    * option = num;
 
     return option;
 }
