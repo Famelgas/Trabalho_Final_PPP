@@ -96,7 +96,6 @@ bool read_file(binary_tree* tree, char file_name[]) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
                 return false;
             }
-
         }
         if (aux_node == NULL) {
             if (!add_tree_node(tree->tree_root, aux_node,  line, pos)) { 
