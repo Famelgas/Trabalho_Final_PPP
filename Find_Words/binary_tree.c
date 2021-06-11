@@ -36,7 +36,7 @@ static tree_node* add_node(tree_node* tree_root, tree_node* node, char str[], lo
 
 bool add_tree_node(tree_node* tree_root, tree_node* aux_node, char str[], long pos) {
     tree_node* node;
-    node = malloc(sizeof(node));
+    node = malloc(sizeof(tree_node));
     if (node == NULL) {
         fprintf(stderr, "Erro na criação de um novo nó.\n");
         return false;
