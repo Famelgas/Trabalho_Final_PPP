@@ -90,7 +90,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
         // line - passa a ser apenas a palavra
         separate_string(line, &pos);
 
-        aux_node = find_tree_node(tree, line);
+        aux_node = find_tree_node(tree->tree_root, line);
         if (aux_node != NULL) {
             if (!add_occurrence(aux_node, tree->tree_root, pos)) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
