@@ -64,7 +64,10 @@ tree_node* find_tree_node(tree_node* tree_root, char word[]) {
         return tree_root;
 
     else if (strcmp(tree_root->word, word) > 0)
-        return find_tree_node(tree_root->left, word);
+        find_tree_node(tree_root->left, word);
     
-    return find_tree_node(tree_root->right, word);
+    else 
+        find_tree_node(tree_root->right, word);
+
+    return tree_root;
 }
