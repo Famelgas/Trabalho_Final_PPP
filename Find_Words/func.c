@@ -59,9 +59,13 @@ static char* read_name(char file_name[]) {
 
 static void separate_string(char* str, long* pos) {
     const char delims[] = " \t\f\v\r\n";
+    char buffer[MAX_WORD_SIZE];
 
     str = strtok(str, delims);
     * pos = (int) strtol(strtok(NULL, delims), NULL, 10);
+
+    strcpy(buffer, str);
+    strtobase_u8(str, buffer);
 
 }
 
@@ -92,7 +96,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
 
         aux_node = find_tree_node(tree->tree_root, line);
         if (aux_node != NULL) {
-            if (!add_occurrence(aux_node, tree->tree_root, pos)) {
+            if (!add_occurrence(aux_node, pos)) {
                 fprintf(stderr, "Erro ao adicionar nova ocorrência.\n");
                 return false;
             }

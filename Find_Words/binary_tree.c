@@ -14,23 +14,23 @@ binary_tree* initialize_binary_tree() {
 }
 
 
-static void add_node(tree_node* tree_root, tree_node* node) {
-    if (tree_root == NULL) {
-        tree_root = node;
+static void add_node(tree_node** tree_root, tree_node* node) {
+    if (*tree_root == NULL) {
+        *tree_root = node;
         return;
     }
-    if (strcmp(tree_root->word, node->word) > 0) {
-        if (tree_root->left == NULL) {
-            tree_root->left = node;
+    if (strcmp((*tree_root)->word, node->word) > 0) {
+        if ((*tree_root)->left == NULL) {
+            (*tree_root)->left = node;
             return;
         }
-        return add_node(tree_root->left, node);
+        add_node(&(*tree_root)->left, node);
     }
-    if (strcmp(tree_root->word, node->word) < 0 && tree_root->right == NULL) {
-        tree_root->right = node;
+    if (strcmp((*tree_root)->word, node->word) < 0 && (*tree_root)->right == NULL) {
+        (*tree_root)->right = node;
         return;
     }
-    return add_node(tree_root->right, node);
+    add_node(&(*tree_root)->right, node);
 }
 
 
@@ -50,7 +50,7 @@ bool add_tree_node(binary_tree* tree, char str[], long pos) {
         return false;
     }
 
-    add_node(tree->tree_root, node);
+    add_node(&(tree->tree_root), node);
 
     return true;
 }

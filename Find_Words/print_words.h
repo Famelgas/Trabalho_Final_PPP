@@ -4,7 +4,7 @@
 #include "binary_tree.h"
 
 
-bool add_occurrence(tree_node* aux_node, tree_node* route, long pos);
+bool add_occurrence(tree_node* aux_node, long pos);
 
 bool show_word_occurrences(tree_node* node, char file_name[]);
 
