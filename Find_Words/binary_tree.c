@@ -14,6 +14,26 @@ binary_tree* initialize_binary_tree() {
 }
 
 
+static tree_node* initialize_tree_node(char str[], long pos) {
+    tree_node* node = malloc(sizeof(tree_node));
+    if (node == NULL) {
+        fprintf(stderr, "Erro na criação de um novo nó.\n");
+        return NULL;
+    }
+
+    node->right = NULL;
+    node->left = NULL;
+    strcpy(node->word, str);
+    node->list = initialize_linked_list();
+    if (!add_list_node(node->list, pos)) {
+        fprintf(stderr, "Erro ao adicionar ocurrência no novo nó.\n");
+        return NULL;
+    }
+
+    return node;
+}
+
+
 static void add_node(tree_node** tree_root, tree_node* node) {
     if (*tree_root == NULL) {
         *tree_root = node;
@@ -35,20 +55,11 @@ static void add_node(tree_node** tree_root, tree_node* node) {
 
 
 bool add_tree_node(binary_tree* tree, char str[], long pos) {
-    tree_node* node = malloc(sizeof(tree_node));
+    tree_node* node = initialize_tree_node(str, pos);    
     if (node == NULL) {
-        fprintf(stderr, "Erro na criação de um novo nó.\n");
         return false;
     }
 
-    node->right = NULL;
-    node->left = NULL;
-    strcpy(node->word, str);
-    node->list = initialize_linked_list();
-    if (!add_list_node(node->list, pos)) {
-        fprintf(stderr, "Erro ao adicionar ocurrência no novo nó.\n");
-        return false;
-    }
 
     add_node(&(tree->tree_root), node);
 

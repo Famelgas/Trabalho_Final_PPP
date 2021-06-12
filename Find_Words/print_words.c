@@ -50,22 +50,28 @@ static void print_context(list_node* node, char file_name[]) {
 }
 
 
-static char* separate_name(char file_name[], char new_name[]) {
+static char* separate_name(char file_name[]) {
+    char new_name[MAX_FILE_NAME];
     int i = 0;
-    for (char c = file_name[3]; c < strlen(file_name); ++c, ++i) {
-        new_name[0] = c; 
+    int c = 4;
+
+    while (c < strlen(file_name)) {
+        new_name[i] = file_name[c];
+        ++c;
+        ++i;
     }
-    return new_name;
+
+    
+    return strcpy(file_name, new_name);
 }
 
 
 // Escrever todas as ocorrências de uma palavra
 bool show_word_occurrences(tree_node* node, char file_name[]) {
     list_node* i = node->list->list_root;
-    size_t len = strlen(file_name) - 4;
-    char new_name[len];
+    
 
-    file_name = separate_name(file_name, new_name);
+    file_name = separate_name(file_name);
 
     do {
         print_context(i, file_name);
