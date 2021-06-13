@@ -5,7 +5,6 @@
 #include "lib-utf8.h"
 #include "func.h"
 
-const char LETTERS[] = {"1234567890abcdefghijklmnopqrstuvwxyz"};
 
 static bool read_name(char* file_name) {
     printf("Introduza o nome do ficheiro que quer ler:\n");
@@ -69,11 +68,8 @@ bool read_file(char file_name[], char new_file_name[]) {
         strtobase_u8(buffer_base, buffer);
         chr = buffer_base[0];
 
-        for (size_t i = 0; i < strlen(LETTERS); ++i) {
-            if (chr != LETTERS[i]) {
-                new_word = true;
-                break;
-            }
+        if (!isalnum(chr)) {
+            new_word = true;
         }
 
         if (new_word) {
@@ -87,8 +83,7 @@ bool read_file(char file_name[], char new_file_name[]) {
             strcpy(str, "\0");
             new_word = false;
         }
-        
-        if (!new_word) {
+        else {
             char buffer_cat[2] = "\0";
             buffer_cat[0] = chr;
             strcat(str, buffer_cat);
