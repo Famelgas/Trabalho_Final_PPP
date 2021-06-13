@@ -194,13 +194,24 @@ void find_words_by_group(binary_tree* tree, char file_name[]) {
 
         int i = 0;
         char c = buffer_base[0];
-        do {
+        while (i < MAX_NUMBER_LETTERS) {
             if (c == '\n') {
                 c = '\0';
             }
             letters[i] = c;
+            ++i;
             ++c;
-        } while (c != buffer_base[2]);
+            if (c == buffer_base[2]) {
+                break;
+            }
+        }
+
+        for (size_t j = 0; j < strlen(letters); ++j) {
+            if (letters[j] == '\n') {
+                letters[j] = '\0';
+            }
+        }
+
     }
 
     if (option == 2) {
