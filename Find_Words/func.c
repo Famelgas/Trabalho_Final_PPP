@@ -175,6 +175,7 @@ void find_words_by_letter(binary_tree* tree, char file_name[]) {
     }
     char buffer[MAX_WORD_SIZE];
     fgets(buffer, MAX_WORD_SIZE, stdin);
+
 }
 
 
@@ -204,6 +205,10 @@ void find_words_by_group(binary_tree* tree, char file_name[]) {
         fgets_u8(buffer, 4, stdin);
         strtobase_u8(buffer_base, buffer);
 
+        char trash[MAX_WORD_SIZE];
+        fgets(trash, MAX_WORD_SIZE, stdin);
+
+
         char c = buffer_base[0];
 
         for (int i = 0; i < MAX_NUMBER_LETTERS; ++i) {
@@ -223,6 +228,7 @@ void find_words_by_group(binary_tree* tree, char file_name[]) {
         }
 
         print_words(tree, letters);
+
         return;
 
     }

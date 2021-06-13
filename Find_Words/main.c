@@ -82,18 +82,24 @@ int main() {
 
         if (option == 1) {
             find_occurrences(tree, file_name);
+            printf("\n");
         }
         if (option == 2) {
             // dá-se apenas uma letra e são apresentadas todas as palavras dessa letra
             find_words_by_letter(tree, file_name);
+            printf("\n");
         }
         if (option == 3) {
             // dá-se duas letras diferentes e são apresentadas toodas as palavras de
             // de todas as letras nesse intervalo
+            // ou então dá-se todas as letras que se pretende pesquisar
             find_words_by_group(tree, file_name);
+            printf("\n");
+            
         }
         if (option == 4 ) {
             print_tree(tree->tree_root, 0);
+            printf("\n");
         }
 
     }
