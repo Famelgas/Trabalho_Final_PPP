@@ -29,13 +29,17 @@ static char* read_word(char word[]) {
     printf("Introduza a palavra (a palavra tem que ter pelo menos três caracteres, números ou letras).\n");
     if (fgets_u8(word, MAX_WORD_SIZE + 1,stdin) == NULL)
         return NULL;
-
-    if (strlen(word) < 3)
-        return NULL;
-
     char buffer[MAX_WORD_SIZE];
     strcpy(buffer, word);
     strtobase_u8(word, buffer);
+
+    size_t len = strlen(word);
+    word[len - 1] = 0;
+
+    if (len < 3)
+        return NULL;
+
+    
 
     return word;
 }
@@ -77,8 +81,13 @@ bool read_file(binary_tree* tree, char file_name[]) {
         return false;
     }
 
+    char new_file_name[MAX_FILE_NAME + 4];
+    strcpy(new_file_name, "idx_");
+    strcat(new_file_name, file_name);
+    
 
-    file = fopen(file_name, "r");
+
+    file = fopen(new_file_name, "r");
     if (file == NULL) {
         fprintf(stderr, "Erro, ficheiro não encontrado.\n");
         return false;
@@ -102,11 +111,7 @@ bool read_file(binary_tree* tree, char file_name[]) {
             }
         }
         if (aux_node == NULL) {
-            if (!add_tree_node(tree, line, pos)) { 
-                fprintf(stderr, "Erro na escrita da palavra.\n");
-                return false;
-            }
-
+            add_tree_node(tree, line, pos);
         }
 
     }

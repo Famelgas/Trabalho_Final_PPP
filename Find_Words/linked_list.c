@@ -46,4 +46,11 @@ bool add_list_node(linked_list* node, long pos) {
 }
 
 
+void print_list(list_node* list_root) {
+    list_node* node = list_root;
+    while (node != NULL) {
+        printf("%ld ", node->position);
+        node = node->next_node;
+    }
+}
 

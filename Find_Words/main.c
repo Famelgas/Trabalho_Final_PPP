@@ -13,6 +13,8 @@ int main() {
         return 1;
     }
 
+    print_tree(tree->tree_root, 0);
+
     int option;
     while (!menu(&option)) {
         printf("Introduza um número.\n");

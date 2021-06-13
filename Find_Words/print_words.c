@@ -28,15 +28,18 @@ static void print_context(list_node* node, char file_name[]) {
     fseek(file, node->position, SEEK_SET);
 
     while (true) {
-        fseek(file, -1, SEEK_CUR);
-        if (fgetc(file) == '.') 
+        fseek(file, -2, SEEK_CUR);
+        if (fgetc(file) == '.' || ftell(file) == 1) 
             break;
     }
 
     int dot_count = 0;
-    while (dot_count < 2 && fgetc(file) != EOF) {
-        char chr;
-        if ((chr = fgetc(file)) == '.') {
+    while (dot_count < 2) {
+        char chr = (char) fgetc(file);
+        if (chr == EOF) {
+            break;
+        }
+        if (chr == '.') {
             ++dot_count;
             printf("%c", chr);
         }
@@ -57,7 +60,7 @@ bool show_word_occurrences(tree_node* node, char file_name[]) {
     list_node* i = node->list->list_root;
     
     do {
-        print_context(i, file_name + 4);
+        print_context(i, file_name);
         i = node->list->list_root->next_node;
     } while (i != node->list->list_root);
 
@@ -83,7 +86,7 @@ static tree_node* find_letter(tree_node* tree_root, char letter) {
 static void print_occurrence_numbers(tree_node* node) {
     list_node* i = node->list->list_root;
     do {
-        printf("%d ", i->position);
+        printf("%ld ", i->position);
         i = node->list->list_root->next_node;
     } while (i != node->list->list_root);
     printf("\n");

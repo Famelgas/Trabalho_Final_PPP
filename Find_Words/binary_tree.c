@@ -18,7 +18,7 @@ static tree_node* initialize_tree_node(char str[], long pos) {
     tree_node* node = malloc(sizeof(tree_node));
     if (node == NULL) {
         fprintf(stderr, "Erro na criação de um novo nó.\n");
-        return NULL;
+        exit(1);
     }
 
     node->right = NULL;
@@ -34,36 +34,33 @@ static tree_node* initialize_tree_node(char str[], long pos) {
 }
 
 
-static void add_node(tree_node** tree_root, tree_node* node) {
-    if (*tree_root == NULL) {
-        *tree_root = node;
-        return;
-    }
-    if (strcmp((*tree_root)->word, node->word) > 0) {
-        if ((*tree_root)->left == NULL) {
-            (*tree_root)->left = node;
+static void add_node(tree_node* tree_root, tree_node* node) {
+    if (strcmp(tree_root->word, node->word) > 0) {
+        if (tree_root->left == NULL) {
+            tree_root->left = node;
             return;
         }
-        add_node(&(*tree_root)->left, node);
+        add_node(tree_root->left, node);
     }
-    if (strcmp((*tree_root)->word, node->word) < 0 && (*tree_root)->right == NULL) {
-        (*tree_root)->right = node;
-        return;
+    else {
+        if (tree_root->right == NULL) {
+            tree_root->right = node;
+            return;
+        }
+        add_node(tree_root->right, node);
     }
-    add_node(&(*tree_root)->right, node);
 }
 
 
-bool add_tree_node(binary_tree* tree, char str[], long pos) {
+void add_tree_node(binary_tree* tree, char str[], long pos) {
     tree_node* node = initialize_tree_node(str, pos);    
-    if (node == NULL) {
-        return false;
+    
+    if (tree->tree_root == NULL) {
+        tree->tree_root = node;
+        return;
     }
 
-
-    add_node(&(tree->tree_root), node);
-
-    return true;
+    add_node(tree->tree_root, node);
 }
 
 
@@ -75,10 +72,24 @@ tree_node* find_tree_node(tree_node* tree_root, char word[]) {
         return tree_root;
 
     else if (strcmp(tree_root->word, word) > 0)
-        find_tree_node(tree_root->left, word);
+        return find_tree_node(tree_root->left, word);
     
     else 
-        find_tree_node(tree_root->right, word);
+        return find_tree_node(tree_root->right, word);
+}
 
-    return tree_root;
+
+void print_tree (tree_node* tree_root, int indent) {
+    for (int i = 0; i < indent; ++i) {
+        printf(" ");
+    }
+    printf("%s ",tree_root->word);
+    print_list(tree_root->list->list_root);
+
+    if (tree_root->left != NULL) {
+        print_tree(tree_root->left, indent + 1);
+    }
+    if (tree_root->right != NULL) {
+        print_tree(tree_root->right, indent + 1);
+    }
 }
