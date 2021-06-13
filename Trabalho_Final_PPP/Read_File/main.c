@@ -5,7 +5,6 @@
  * do ficheiro main.c da segunda fase do trabalho, na pasta Find_Words.
  * O texto enviado junto com os ficheiros e apenas o texto usado para testar os programas, 
  * sendo assim pode ser alterado pelo texto desejado.
- * 
  *  
  */
 
