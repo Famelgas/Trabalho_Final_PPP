@@ -55,10 +55,11 @@ bool read_file(char file_name[], char new_file_name[]) {
     strcat(new_file_name, file_name);
     new_file = fopen(new_file_name, "w");
 
-    char chr_temp;
-    char chr;
-    char str[50] = "";
-    while ((chr_temp = fgetc(file)) != EOF) {
+    
+    while (true) {
+        char chr_temp = fgetc(file);
+        char chr;
+        char str[50] = "";
         long position = 0;
         bool new_word = false;
 
@@ -89,6 +90,9 @@ bool read_file(char file_name[], char new_file_name[]) {
             strcat(str, buffer_cat);
         }
         
+        if (chr == EOF) {
+            break;
+        }
     }
 
     fclose(new_file);
