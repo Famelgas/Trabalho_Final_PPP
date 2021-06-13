@@ -14,7 +14,6 @@ typedef struct list_node {
 
 typedef struct {
     list_node* list_root;
-    list_node* list_end;
 } linked_list;
 
 

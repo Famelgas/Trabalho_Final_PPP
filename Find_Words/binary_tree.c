@@ -85,6 +85,7 @@ void print_tree (tree_node* tree_root, int indent) {
     }
     printf("%s ",tree_root->word);
     print_list(tree_root->list->list_root);
+    printf("\n");
 
     if (tree_root->left != NULL) {
         print_tree(tree_root->left, indent + 1);

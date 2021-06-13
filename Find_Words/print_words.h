@@ -8,7 +8,7 @@ bool add_occurrence(tree_node* aux_node, long pos);
 
 bool show_word_occurrences(tree_node* node, char file_name[]);
 
-bool print_words_by_letter(binary_tree* tree, char letter);
+void print_words_by_letter(tree_node* tree_root, char letter);
 
 
 #endif

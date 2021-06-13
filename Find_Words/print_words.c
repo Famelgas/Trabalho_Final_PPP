@@ -29,9 +29,10 @@ static void print_context(list_node* node, char file_name[]) {
 
     while (true) {
         fseek(file, -2, SEEK_CUR);
-        if (fgetc(file) == '.' || ftell(file) == 1) 
+        if (ftell(file) == 0 || fgetc(file) == '.') 
             break;
     }
+
 
     int dot_count = 0;
     while (dot_count < 2) {
@@ -59,26 +60,12 @@ static void print_context(list_node* node, char file_name[]) {
 bool show_word_occurrences(tree_node* node, char file_name[]) {
     list_node* i = node->list->list_root;
     
-    do {
+    while (i != NULL) {
         print_context(i, file_name);
-        i = node->list->list_root->next_node;
-    } while (i != node->list->list_root);
+        i = i->next_node;
+    }
 
     return true;
-}
-
-
-static tree_node* find_letter(tree_node* tree_root, char letter) {
-    if (tree_root == NULL) 
-        return NULL;
-    
-    if (tree_root->word[0]== letter) 
-        return tree_root;
-    
-    else if (tree_root->word[0] > letter)
-        return find_letter(tree_root->left, letter);
-    
-    return find_letter(tree_root->right, letter);
 }
 
 
@@ -87,27 +74,25 @@ static void print_occurrence_numbers(tree_node* node) {
     list_node* i = node->list->list_root;
     while (i != NULL) {
         printf("%ld ", i->position);
-        i = node->list->list_root->next_node;
+        i = i->next_node;
     }
     printf("\n");
 }
 
 
 // Escrever todas as palavras de uma letra
-bool print_words_by_letter(binary_tree* tree, char letter) {
-    tree_node* node = tree->tree_root;
-    tree_node* next_node = tree->tree_root;
-
-    while (node != NULL) {
-        node = find_letter(next_node, letter);
-        if (node->left->word[0] == letter) {
-            next_node = node->left;
-        }
-        else if (node->right->word[0] == letter) {
-            next_node = node->right;
-        }
-        printf("%s ", node->word);
-        print_occurrence_numbers(node);
+void print_words_by_letter(tree_node* tree_root, char letter) {
+    if (tree_root->word[0]== letter) {
+        printf("%s ", tree_root->word);
+        print_occurrence_numbers(tree_root);
     }
-    return true;
+    
+    if (tree_root->left != NULL) {
+        print_words_by_letter(tree_root->left, letter);
+    }
+
+    if (tree_root->right != NULL) {
+        print_words_by_letter(tree_root->right, letter);
+    }
+      
 }

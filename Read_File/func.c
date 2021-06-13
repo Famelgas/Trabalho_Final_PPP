@@ -5,10 +5,10 @@
 #include "lib-utf8.h"
 #include "func.h"
 
-const char NOT_LETTERS[] = {" \n\f\r\t\v,.!_-()?:;"};
+const char LETTERS[] = {"1234567890abcdefghijklmnopqrstuvwxyz"};
 
 static bool read_name(char* file_name) {
-    printf("Introduza o nome do ficheiro que quer ler:\n");
+    printf("Introduza o nome do ficheiro que quer ler:\n=> ");
     if (fgets_u8(file_name, MAX_FILE_NAME + 1,stdin) == NULL) {
         fprintf(stderr, "Erro, nome não válido.\n");
         return false;
@@ -56,19 +56,22 @@ bool read_file(char file_name[], char new_file_name[]) {
     strcat(new_file_name, file_name);
     new_file = fopen(new_file_name, "w");
 
+    char chr_temp;
     char chr;
     char str[50] = "";
-    while ((chr = fgetc(file)) != EOF) {
+    while ((chr_temp = fgetc(file)) != EOF) {
         size_t i = 0;
         long position = 0;
         bool new_word = false;
+        
+        strtobase_u8(&chr, &chr_temp);
         do {
-            if (NOT_LETTERS[i] == chr) {
+            if (LETTERS[i] != chr) {
                 new_word = true;
                 break;
             }
             ++i;
-        } while (i < strlen(NOT_LETTERS)); 
+        } while (i < strlen(LETTERS)); 
         
         if (new_word) {
             if (strlen(str) >= 3) {

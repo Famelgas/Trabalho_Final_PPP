@@ -26,7 +26,7 @@ static bool read_number(int* option) {
 
 
 static char* read_word(char word[]) {
-    printf("Introduza a palavra (a palavra tem que ter pelo menos três caracteres, números ou letras).\n");
+    printf("Introduza a palavra (a palavra tem que ter pelo menos três caracteres, números ou letras).\n=> ");
     if (fgets_u8(word, MAX_WORD_SIZE + 1,stdin) == NULL)
         return NULL;
     char buffer[MAX_WORD_SIZE];
@@ -46,7 +46,7 @@ static char* read_word(char word[]) {
 
 
 static char* read_name(char file_name[]) {
-    printf("Introduza o nome do ficheiro que quer ler:\n");
+    printf("Introduza o nome do ficheiro que quer ler:\n=> ");
     if (fgets_u8(file_name, MAX_FILE_NAME + 1,stdin) == NULL) {
         fprintf(stderr, "Erro, nome não válido.\n");
         return NULL;
@@ -128,7 +128,7 @@ bool menu(int* option) {
     printf("0 - Sair do programa\n"
             "1 - Encontrar todas as ocurrências de uma palavra e o seu contexto\n"
             "2 - Mostrar todas as palavras começadas por uma letra\n"
-            "3 - Mostrar todas as palavras numa gama de letras\n");
+            "3 - Mostrar todas as palavras numa gama de letras\n=> ");
     
     if (!read_number(option)) {
         fprintf(stderr,"Erro na leitura da opção\n");
@@ -162,23 +162,22 @@ bool find_occurrences(binary_tree* tree, char file_name[]) {
 }
 
 // Econtrar todas as palavras de uma letra
-bool find_words_by_letter(binary_tree* tree, char file_name[]) {
+void find_words_by_letter(binary_tree* tree, char file_name[]) {
     char letter;
     char chr_temp;
 
-    printf("Introduza a letra pretendida: \n");
+    printf("Introduza a letra pretendida:\n=> ");
     fgets_c_u8(&chr_temp, 1, stdin);
     strtobase_u8(&letter, &chr_temp);
-    if (!print_words_by_letter(tree, letter)) {
-        fprintf(stderr, "Erro, letra não encontrada.\n");
-        return false;
+    if (tree->tree_root != NULL) {
+        print_words_by_letter(tree->tree_root, letter);
     }
-
-    return true;
+    char buffer[MAX_WORD_SIZE];
+    fgets(buffer, MAX_WORD_SIZE, stdin);
 }
 
 // Econtrar todas as palavras de um grupo de letras
-bool find_words_by_group(binary_tree* tree, char file_name[]) {
+void find_words_by_group(binary_tree* tree, char file_name[]) {
     int option;
     char letters[MAX_NUMBER_LETTERS] = "";
     char buffer[3] = "";
@@ -186,10 +185,10 @@ bool find_words_by_group(binary_tree* tree, char file_name[]) {
 
     printf("Escolha a opção que pretende:\n"
             "1 - Intervalo de letras;\n"
-            "2 - Introduzir todas as letras pretendidas.\n");
+            "2 - Introduzir todas as letras pretendidas.\n=> ");
     read_number(&option);
     if (option == 1) {
-        printf("Introduza o intervalo da seguindo o exemplo (Ex: a-j):\n");
+        printf("Introduza o intervalo da seguindo o exemplo (Ex: a-j):\n=> ");
         fgets_u8(buffer, 3, stdin);
         strtobase_u8(buffer_base, buffer);
         
@@ -201,17 +200,15 @@ bool find_words_by_group(binary_tree* tree, char file_name[]) {
     }
 
     if (option == 2) {
-        printf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):");
+        printf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):\n=> ");
         fgets_u8(letters, MAX_NUMBER_LETTERS, stdin);
     }
 
     for (size_t i = 0; i < strlen(letters); ++i) {
-        if (!print_words_by_letter(tree, letters[i])) {
-            fprintf(stderr, "Erro, letra %c não encontrada.\n", letters[i]);
-            return false;
+        if (tree->tree_root != NULL) {
+            print_words_by_letter(tree->tree_root, letters[i]);
         }
     
     }
 
-    return true;
 }

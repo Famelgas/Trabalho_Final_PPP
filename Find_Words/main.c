@@ -15,30 +15,32 @@ int main() {
 
     print_tree(tree->tree_root, 0);
 
-    int option;
-    while (!menu(&option)) {
-        printf("Introduza um número.\n");
-    }
+    int option = 10;
 
-    if (!option) {
-        // sair
-        return 0;
-    }
+    while (true) {
+        while (!menu(&option)) {
+            printf("Introduza um número.\n");
+        }
 
-    if (option == 1) {
-        find_occurrences(tree, file_name);
-    }
-    if (option == 2) {
-        // dá-se apenas uma letra e são apresentadas todas as palavras dessa letra
-        find_words_by_letter(tree, file_name);
-    }
-    if (option == 3) {
-        // dá-se duas letras diferentes e são apresentadas toodas as palavras de
-        // de todas as letras nesse intervalo
-        find_words_by_group(tree, file_name);
-    }
+        if (option == 0) {
+            // sair
+            return 0;
+        }
 
-    
+        if (option == 1) {
+            find_occurrences(tree, file_name);
+        }
+        if (option == 2) {
+            // dá-se apenas uma letra e são apresentadas todas as palavras dessa letra
+            find_words_by_letter(tree, file_name);
+        }
+        if (option == 3) {
+            // dá-se duas letras diferentes e são apresentadas toodas as palavras de
+            // de todas as letras nesse intervalo
+            find_words_by_group(tree, file_name);
+        }
+
+    }
 
     return 0;
 }
