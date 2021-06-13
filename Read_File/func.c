@@ -8,7 +8,7 @@
 const char LETTERS[] = {"1234567890abcdefghijklmnopqrstuvwxyz"};
 
 static bool read_name(char* file_name) {
-    printf("Introduza o nome do ficheiro que quer ler:\n=> ");
+    printf("Introduza o nome do ficheiro que quer ler:\n");
     if (fgets_u8(file_name, MAX_FILE_NAME + 1,stdin) == NULL) {
         fprintf(stderr, "Erro, nome não válido.\n");
         return false;
@@ -60,34 +60,38 @@ bool read_file(char file_name[], char new_file_name[]) {
     char chr;
     char str[50] = "";
     while ((chr_temp = fgetc(file)) != EOF) {
-        size_t i = 0;
         long position = 0;
         bool new_word = false;
-        
-        strtobase_u8(&chr, &chr_temp);
-        do {
-            if (LETTERS[i] != chr) {
+
+        char buffer[2] = "\0";
+        char buffer_base[2] = "\0";
+        buffer[0] = chr_temp;
+        strtobase_u8(buffer_base, buffer);
+        chr = buffer_base[0];
+
+        for (size_t i = 0; i < strlen(LETTERS); ++i) {
+            if (chr != LETTERS[i]) {
                 new_word = true;
                 break;
             }
-            ++i;
-        } while (i < strlen(LETTERS)); 
-        
+        }
+
         if (new_word) {
             if (strlen(str) >= 3) {
                 char pos[15];
                 position = ftell(file) - strlen(str);
                 // fazer conversao do numero (posicao) para string
-                sprintf(pos, "%d", (int) position);
+                sprintf(pos, "%ld", position);
                 write_new_word(str, pos, new_file, file);
             }
             strcpy(str, "\0");
+            new_word = false;
         }
         
         if (!new_word) {
-            char buffer[2] = "\0";
-            buffer[0] = chr;
-            strcat(str, buffer);
+            char buffer_cat[2] = "\0";
+            buffer_cat[0] = chr;
+            strcat(str, buffer_cat);
         }
         
     }
