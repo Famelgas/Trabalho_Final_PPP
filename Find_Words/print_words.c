@@ -8,16 +8,6 @@
 
 
 
-bool add_occurrence(tree_node* aux_node, long pos) {
-    if (!add_list_node(aux_node->list, pos)) { 
-        fprintf(stderr, "Erro ao adicionar ocorrência.\n");
-        return false;
-    }
-
-    return true;
-}
-
-
 // Escrever contexto da palavra (frase da palavra e frase posterior)
 static void print_context(list_node* node, char file_name[]) {
     FILE* file;

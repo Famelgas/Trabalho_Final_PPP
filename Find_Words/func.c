@@ -128,7 +128,8 @@ bool menu(int* option) {
     printf("0 - Sair do programa\n"
             "1 - Encontrar todas as ocurrências de uma palavra e o seu contexto\n"
             "2 - Mostrar todas as palavras começadas por uma letra\n"
-            "3 - Mostrar todas as palavras numa gama de letras\n=> ");
+            "3 - Mostrar todas as palavras numa gama de letras\n"
+            "4 - Imprimir a árvore binária\n=> ");
     
     if (!read_number(option)) {
         fprintf(stderr,"Erro na leitura da opção\n");
@@ -176,34 +177,43 @@ void find_words_by_letter(binary_tree* tree, char file_name[]) {
     fgets(buffer, MAX_WORD_SIZE, stdin);
 }
 
+
+static void print_words(binary_tree* tree, char letters[]) {
+    for (size_t i = 0; i < strlen(letters); ++i) {
+        if (tree->tree_root != NULL) {
+            print_words_by_letter(tree->tree_root, letters[i]);
+        }
+    }
+}
+
+
 // Econtrar todas as palavras de um grupo de letras
 void find_words_by_group(binary_tree* tree, char file_name[]) {
     int option;
     char letters[MAX_NUMBER_LETTERS] = "";
-    char buffer[3] = "";
-    char buffer_base[3] = "";
+    char buffer[4] = "";
+    char buffer_base[4] = "";
 
     printf("Escolha a opção que pretende:\n"
             "1 - Intervalo de letras;\n"
             "2 - Introduzir todas as letras pretendidas.\n=> ");
     read_number(&option);
+    
     if (option == 1) {
         printf("Introduza o intervalo da seguindo o exemplo (Ex: a-j):\n=> ");
-        fgets_u8(buffer, 3, stdin);
+        fgets_u8(buffer, 4, stdin);
         strtobase_u8(buffer_base, buffer);
 
-        int i = 0;
         char c = buffer_base[0];
-        while (i < MAX_NUMBER_LETTERS) {
-            if (c == '\n') {
-                c = '\0';
-            }
-            letters[i] = c;
-            ++i;
-            ++c;
+
+        for (int i = 0; i < MAX_NUMBER_LETTERS; ++i) {
             if (c == buffer_base[2]) {
+                letters[i] = c;
                 break;
             }
+            letters[i] = c;
+            ++c;
+            
         }
 
         for (size_t j = 0; j < strlen(letters); ++j) {
@@ -212,18 +222,16 @@ void find_words_by_group(binary_tree* tree, char file_name[]) {
             }
         }
 
+        print_words(tree, letters);
+        return;
+
     }
 
     if (option == 2) {
         printf("Escreva todas as letras que deseja seguinto o exemplo (Ex: adjs):\n=> ");
         fgets_u8(letters, MAX_NUMBER_LETTERS, stdin);
-    }
 
-    for (size_t i = 0; i < strlen(letters); ++i) {
-        if (tree->tree_root != NULL) {
-            print_words_by_letter(tree->tree_root, letters[i]);
-        }
-    
-    }
-
+        print_words(tree, letters);
+        return;
+    }   
 }

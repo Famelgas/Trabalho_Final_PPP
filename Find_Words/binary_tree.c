@@ -64,6 +64,16 @@ void add_tree_node(binary_tree* tree, char str[], long pos) {
 }
 
 
+bool add_occurrence(tree_node* aux_node, long pos) {
+    if (!add_list_node(aux_node->list, pos)) { 
+        fprintf(stderr, "Erro ao adicionar ocorrência.\n");
+        return false;
+    }
+
+    return true;
+}
+
+
 tree_node* find_tree_node(tree_node* tree_root, char word[]) {
     if (tree_root == NULL) 
         return NULL;

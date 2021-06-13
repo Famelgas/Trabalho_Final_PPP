@@ -23,6 +23,8 @@ binary_tree* initialize_binary_tree();
 
 void add_tree_node(binary_tree* tree, char str[], long pos);
 
+bool add_occurrence(tree_node* aux_node, long pos);
+
 tree_node* find_tree_node(tree_node* tree_root, char str[]);
 
 void print_tree (tree_node* tree_root, int indent);
