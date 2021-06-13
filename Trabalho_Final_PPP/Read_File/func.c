@@ -51,6 +51,7 @@ bool read_file(char file_name[], char new_file_name[]) {
         return false;
     }
     
+    // abre-se o ficheiro antes do cilco para que a escrita seja contínua
     strcpy(new_file_name, "idx_");
     strcat(new_file_name, file_name);
     new_file = fopen(new_file_name, "w");
@@ -69,10 +70,12 @@ bool read_file(char file_name[], char new_file_name[]) {
         strtobase_u8(buffer_base, buffer);
         chr = buffer_base[0];
 
+        // caso o caracter não seja um número ou uma letra é considerado um separador
         if (!isalnum(chr)) {
             new_word = true;
         }
 
+        // caso seja uma nova palavra e tanha mais de 3 letras, escreve-se no ficheiro
         if (new_word) {
             if (strlen(str) >= 3) {
                 char pos[15];
@@ -84,6 +87,7 @@ bool read_file(char file_name[], char new_file_name[]) {
             strcpy(str, "\0");
             new_word = false;
         }
+        // caso seja a mesma palavra apenas se adiciona o caracter a string
         else {
             char buffer_cat[2] = "\0";
             buffer_cat[0] = chr;
