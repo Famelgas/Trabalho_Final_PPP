@@ -191,12 +191,16 @@ void find_words_by_group(binary_tree* tree, char file_name[]) {
         printf("Introduza o intervalo da seguindo o exemplo (Ex: a-j):\n=> ");
         fgets_u8(buffer, 3, stdin);
         strtobase_u8(buffer_base, buffer);
-        
 
-        int null = 0;
-        for (char c = buffer_base[0]; c <= buffer_base[2]; ++c, ++null) {
-            letters[null] = c;
-        }
+        int i = 0;
+        char c = buffer_base[0];
+        do {
+            if (c == '\n') {
+                c = '\0';
+            }
+            letters[i] = c;
+            ++c;
+        } while (c != buffer_base[2]);
     }
 
     if (option == 2) {
