@@ -85,10 +85,10 @@ static tree_node* find_letter(tree_node* tree_root, char letter) {
 // Escrever o número das ocurrências da palavra dada
 static void print_occurrence_numbers(tree_node* node) {
     list_node* i = node->list->list_root;
-    do {
+    while (i != NULL) {
         printf("%ld ", i->position);
         i = node->list->list_root->next_node;
-    } while (i != node->list->list_root);
+    }
     printf("\n");
 }
 
